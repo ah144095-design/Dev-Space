@@ -1,0 +1,125 @@
+<Window x:Class="DevSpace.Views.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="DevSpace" Height="760" Width="1180" MinWidth="960" MinHeight="640"
+        WindowStartupLocation="CenterScreen" Loaded="Window_Loaded">
+    <Grid Background="{DynamicResource BgPrimaryBrush}">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="240"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+        <Border Grid.Column="0" Background="{DynamicResource SidebarBrush}"
+                BorderBrush="{DynamicResource BorderBrush}" BorderThickness="0,0,1,0">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+
+                <StackPanel Margin="18,20,18,0">
+                    <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
+                        <Border Width="34" Height="34" CornerRadius="9" Margin="0,0,10,0" Background="{DynamicResource AccentBrush}">
+                            <TextBlock Text="D" FontWeight="Bold" FontSize="18" Foreground="White"
+                                       HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                        <StackPanel VerticalAlignment="Center">
+                            <TextBlock FontSize="15" FontWeight="Medium" Foreground="{DynamicResource TextPrimaryBrush}">
+                                <Run Text="Dev"/><Run Text="Space" Foreground="{DynamicResource AccentBrush}"/>
+                            </TextBlock>
+                            <TextBlock Text="workspace active" Foreground="{DynamicResource TextMutedBrush}" FontSize="10" Margin="0,2,0,0"/>
+                        </StackPanel>
+                    </StackPanel>
+                </StackPanel>
+
+                <TextBlock Grid.Row="1" Text="WORKSPACE" Style="{StaticResource SectionLabelStyle}" Margin="18,14,0,5"/>
+
+                <StackPanel Grid.Row="2" Margin="4,4,4,0">
+                    <Button x:Name="NavDashboard" Content="Dashboard" Tag="Active" Click="NavButton_Click"
+                            Style="{StaticResource NavButtonStyle}"/>
+                    <Button x:Name="NavProjects" Content="Projects" Tag="Projects" Click="NavButton_Click"
+                            Style="{StaticResource NavButtonStyle}"/>
+                    <Button x:Name="NavSnippets" Content="Snippets" Tag="Snippets" Click="NavButton_Click"
+                            Style="{StaticResource NavButtonStyle}"/>
+                    <Button x:Name="NavNotes" Content="Notes" Tag="Notes" Click="NavButton_Click"
+                            Style="{StaticResource NavButtonStyle}"/>
+                    <Button x:Name="NavStats" Content="Analytics" Tag="Stats" Click="NavButton_Click"
+                            Style="{StaticResource NavButtonStyle}"/>
+                </StackPanel>
+
+                <Button Grid.Row="3" x:Name="BtnThemeToggle" Click="ThemeToggle_Click"
+                        Style="{StaticResource OutlineButtonStyle}" Padding="12,9" Margin="12,8,12,8"
+                        HorizontalContentAlignment="Left" Content="Dark mode"/>
+
+                <Border Grid.Row="4" Padding="16,14" BorderBrush="{DynamicResource BorderBrush}" BorderThickness="0,1,0,0">
+                    <StackPanel Orientation="Horizontal">
+                        <Border Width="31" Height="31" CornerRadius="15.5" Background="{DynamicResource AccentBrush}">
+                            <TextBlock x:Name="ProfileInitials" Text="DS" VerticalAlignment="Center"
+                                       HorizontalAlignment="Center" Foreground="White" FontWeight="Medium" FontSize="11"/>
+                        </Border>
+                        <StackPanel VerticalAlignment="Center" Margin="9,0,0,0">
+                            <TextBlock x:Name="ProfileName" Text="Developer" FontWeight="Medium" FontSize="12"
+                                       Foreground="{DynamicResource TextPrimaryBrush}"/>
+                            <TextBlock Text="DevSpace" FontSize="10" Foreground="{DynamicResource TextMutedBrush}"/>
+                        </StackPanel>
+                    </StackPanel>
+                </Border>
+            </Grid>
+        </Border>
+
+        <Grid Grid.Column="1" Background="{DynamicResource ContentWashBrush}">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+
+            <Border Grid.Row="0" Background="{DynamicResource SidebarBrush}" BorderBrush="{DynamicResource BorderBrush}"
+                    BorderThickness="0,0,0,1" Padding="22,0" Height="54">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+
+                    <StackPanel VerticalAlignment="Center">
+                        <TextBlock x:Name="PageTitle" Text="Dashboard" FontSize="14" FontWeight="Medium"
+                                   Foreground="{DynamicResource TextPrimaryBrush}"/>
+                        <TextBlock Text="home > workspace" FontSize="10" Foreground="{DynamicResource TextMutedBrush}" Margin="0,1,0,0"/>
+                    </StackPanel>
+
+                    <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center">
+                        <Border Background="{DynamicResource BgSecondaryBrush}" BorderBrush="{DynamicResource BorderBrush}"
+                                BorderThickness="1" CornerRadius="8" Padding="12,7" Width="192" Margin="0,0,10,0">
+                            <Grid>
+                                <TextBox x:Name="SearchBox" Background="Transparent" BorderThickness="0"
+                                         Foreground="{DynamicResource TextPrimaryBrush}" VerticalAlignment="Center"
+                                         Padding="0" Margin="0,0,30,0" TextChanged="SearchBox_TextChanged" KeyDown="SearchBox_KeyDown"/>
+                                <TextBlock Text="Search everything..." Foreground="{DynamicResource TextMutedBrush}"
+                                           FontSize="12" VerticalAlignment="Center" IsHitTestVisible="False">
+                                    <TextBlock.Style>
+                                        <Style TargetType="TextBlock">
+                                            <Setter Property="Visibility" Value="Collapsed"/>
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding Text.Length, ElementName=SearchBox}" Value="0">
+                                                    <Setter Property="Visibility" Value="Visible"/>
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </TextBlock.Style>
+                                </TextBlock>
+                            </Grid>
+                        </Border>
+                        <Button Content="New Project" Click="NewProject_Click" Style="{StaticResource PrimaryButtonStyle}"/>
+                    </StackPanel>
+                </Grid>
+            </Border>
+
+            <ContentControl x:Name="MainContent" Grid.Row="1"/>
+        </Grid>
+
+        <Border x:Name="ThemeOverlay" Grid.ColumnSpan="2" Opacity="0" IsHitTestVisible="False"/>
+    </Grid>
+</Window>

@@ -1,0 +1,143 @@
+<UserControl x:Class="DevSpace.Views.NotesView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             Background="Transparent">
+    <Grid Margin="28,24">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <!-- Header -->
+        <Grid Grid.Row="0" Margin="0,0,0,20">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+            <TextBlock Text="Notes" Style="{StaticResource PageTitleStyle}"/>
+            <Button Grid.Column="1" Content="New Note" Click="AddNote_Click" Style="{StaticResource PrimaryButtonStyle}"/>
+        </Grid>
+
+        <!-- Split Layout -->
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="220"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <!-- Left: Project List -->
+            <Border Grid.Column="0" Background="#FFFFFF" BorderBrush="{StaticResource BorderBrush}" BorderThickness="1" CornerRadius="12" Padding="8" Margin="0,0,16,0">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+                    <TextBlock Text="Projects" FontWeight="SemiBold" Foreground="{StaticResource TextSecondaryBrush}" Margin="8,8,8,5" FontSize="12"/>
+                    <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
+                        <ItemsControl x:Name="ProjectList">
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <Button Content="{Binding Title}" Tag="{Binding Id}"
+                                            Click="Project_Click"
+                                            Style="{StaticResource IconButtonStyle}"
+                                            HorizontalContentAlignment="Left"
+                                            Padding="10,8" Margin="0,2"/>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                    </ScrollViewer>
+                </Grid>
+            </Border>
+
+            <!-- Right: Notes for selected project -->
+            <Grid Grid.Column="1">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+
+                <!-- Notes list for selected project -->
+                <TextBlock x:Name="SelectedProjectLabel" Grid.Row="0" FontSize="14" FontWeight="SemiBold"
+                           Foreground="{StaticResource TextSecondaryBrush}" Margin="0,0,0,12"
+                           Text="Select a project to view its notes"/>
+
+                <Grid Grid.Row="1">
+                    <!-- Empty state -->
+                    <TextBlock x:Name="EmptyState" Text="No notes for this project yet. Click '+ New Note'."
+                               Foreground="{StaticResource TextMutedBrush}" FontSize="14"
+                               HorizontalAlignment="Center" VerticalAlignment="Center" Visibility="Collapsed"/>
+
+                    <!-- Notes Editor Area (split: list top, editor bottom) -->
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="200"/>
+                        </Grid.RowDefinitions>
+
+                        <!-- Note Cards -->
+                        <ScrollViewer Grid.Row="0" VerticalScrollBarVisibility="Auto">
+                            <ItemsControl x:Name="NotesList">
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate>
+                                        <Border Style="{StaticResource CardStyle}" Padding="15" Margin="0,0,0,8" Cursor="Hand">
+                                            <Grid>
+                                                <Grid.RowDefinitions>
+                                                    <RowDefinition Height="Auto"/>
+                                                    <RowDefinition Height="Auto"/>
+                                                    <RowDefinition Height="Auto"/>
+                                                    <RowDefinition Height="Auto"/>
+                                                </Grid.RowDefinitions>
+                                                <Grid Grid.Row="0">
+                                                    <Grid.ColumnDefinitions>
+                                                        <ColumnDefinition Width="*"/>
+                                                        <ColumnDefinition Width="Auto"/>
+                                                    </Grid.ColumnDefinitions>
+                                                    <TextBlock Text="{Binding Title}" FontWeight="SemiBold" FontSize="14"/>
+                                                    <StackPanel Grid.Column="1" Orientation="Horizontal">
+                                                        <Button Content="Edit" Tag="{Binding Id}" Click="EditNote_Click"
+                                                                Style="{StaticResource OutlineButtonStyle}" Padding="8,3" Margin="0,0,5,0" FontSize="11"/>
+                                                        <Button Content="Delete" Tag="{Binding Id}" Click="DeleteNote_Click"
+                                                                Style="{StaticResource OutlineButtonStyle}" Padding="8,3" FontSize="11" Foreground="{StaticResource AccentRoseBrush}"/>
+                                                    </StackPanel>
+                                                </Grid>
+                                                <TextBlock Grid.Row="1" Text="{Binding LastEdited, StringFormat='Last edited: {0:MMM dd, yyyy HH:mm}'}"
+                                                           Foreground="{StaticResource TextMutedBrush}" FontSize="11" Margin="0,4,0,6"/>
+                                                <TextBlock Grid.Row="2" Text="{Binding Content}" Foreground="{StaticResource TextSecondaryBrush}"
+                                                           FontSize="12" TextTrimming="CharacterEllipsis" MaxHeight="40"
+                                                           TextWrapping="Wrap"/>
+                                                <Button Grid.Row="3" Content="Open in Editor →" Tag="{Binding Id}" Click="OpenNote_Click"
+                                                        Style="{StaticResource IconButtonStyle}" HorizontalAlignment="Left"
+                                                        Padding="0,4,0,0" FontSize="12" Foreground="{StaticResource AccentBrush}"/>
+                                            </Grid>
+                                        </Border>
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                            </ItemsControl>
+                        </ScrollViewer>
+
+                        <!-- Separator -->
+                        <Border Grid.Row="1" Height="1" Background="{StaticResource BorderBrush}" Margin="0,10"/>
+
+                        <!-- Full Editor for selected note -->
+                        <Grid Grid.Row="2">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="*"/>
+                            </Grid.RowDefinitions>
+                            <StackPanel Orientation="Horizontal" Margin="0,0,0,5">
+                                <TextBlock x:Name="EditingNoteLabel" Text="No note selected" FontSize="12" Foreground="{StaticResource TextMutedBrush}" VerticalAlignment="Center"/>
+                                <Button Content="Save" Click="SaveNoteContent_Click" Style="{StaticResource PrimaryButtonStyle}"
+                                        Padding="12,4" Margin="10,0,0,0" FontSize="12" x:Name="SaveNoteBtn" IsEnabled="False"/>
+                            </StackPanel>
+                            <TextBox Grid.Row="1" x:Name="NoteEditor" AcceptsReturn="True" TextWrapping="Wrap"
+                                     VerticalScrollBarVisibility="Auto" IsEnabled="False"
+                                     TextChanged="NoteEditor_TextChanged"/>
+                        </Grid>
+                    </Grid>
+                </Grid>
+            </Grid>
+        </Grid>
+    </Grid>
+</UserControl>

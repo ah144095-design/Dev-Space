@@ -1,0 +1,44 @@
+<Window x:Class="DevSpace.Dialogs.AddSnippetDialog"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Add Snippet" Height="550" Width="450"
+        WindowStartupLocation="CenterOwner" Background="{StaticResource BgPrimaryBrush}" Foreground="{StaticResource TextPrimaryBrush}"
+        WindowStyle="ToolWindow">
+    <Grid Margin="20">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <TextBlock Text="Snippet Details" Style="{StaticResource Heading2}" Margin="0,0,0,20"/>
+
+        <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
+            <StackPanel>
+                <TextBlock Text="Title" Foreground="{StaticResource TextSecondaryBrush}" Margin="0,0,0,5"/>
+                <TextBox x:Name="TxtTitle" Margin="0,0,0,15"/>
+
+                <TextBlock Text="Language" Foreground="{StaticResource TextSecondaryBrush}" Margin="0,0,0,5"/>
+                <ComboBox x:Name="CmbLanguage" Margin="0,0,0,15"/>
+
+                <TextBlock Text="Description" Foreground="{StaticResource TextSecondaryBrush}" Margin="0,0,0,5"/>
+                <TextBox x:Name="TxtDescription" Margin="0,0,0,15"/>
+
+                <TextBlock Text="Code Block" Foreground="{StaticResource TextSecondaryBrush}" Margin="0,0,0,5"/>
+                <TextBox x:Name="TxtCodeBlock" AcceptsReturn="True" TextWrapping="Wrap" Height="150"
+                         FontFamily="Consolas" FontSize="12" Margin="0,0,0,15"
+                         VerticalScrollBarVisibility="Auto"/>
+
+                <TextBlock Text="Tags (comma separated)" Foreground="{StaticResource TextSecondaryBrush}" Margin="0,0,0,5"/>
+                <TextBox x:Name="TxtTags" Margin="0,0,0,15"/>
+
+                <CheckBox x:Name="ChkFavorite" Content="Mark as Favorite" Foreground="{StaticResource TextPrimaryBrush}" Margin="0,0,0,15"/>
+            </StackPanel>
+        </ScrollViewer>
+
+        <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,10,0,0">
+            <Button Content="Cancel" Click="Cancel_Click" Style="{StaticResource OutlineButtonStyle}" Margin="0,0,10,0"/>
+            <Button Content="Save" Click="Save_Click" Style="{StaticResource PrimaryButtonStyle}"/>
+        </StackPanel>
+    </Grid>
+</Window>
